@@ -73,6 +73,78 @@ Client-server chat applications are versatile tools that facilitate real-time co
 
 Client-server chat applications are foundational to real-time communication over networks. They incorporate principles of socket programming, communication protocols, and security mechanisms to provide a seamless user experience. Understanding the basics of client-server chat applications is essential for developers involved in networked application development, as they form the backbone of various collaborative communication systems. As technology evolves, chat applications continue to adapt, incorporating new features and technologies to enhance user interaction and connectivity.
 
+##SERVER CODE
+```
+import socket
+
+# Create socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+host = "localhost"
+port = 12345
+
+s.bind((host, port))
+
+
+s.listen(1)
+print("Server is waiting for connection...")
+
+
+conn, addr = s.accept()
+print("Connected with", addr)
+
+
+data = conn.recv(1024)
+print("Client says:", data.decode())
+
+while True:
+    msg = input("Enter message: ")
+    conn.sendall(msg.encode())
+
+    if msg.lower() == "exit":
+        break
+
+    data = conn.recv(1024)
+    if not data:
+        print("Client disconnected.")
+        break
+
+    print("Client says:", data.decode())
+
+
+conn.close()
+s.close()
+```
+#CLIENT
+```
+import socket
+
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+port = 12345
+
+# connect needs a tuple (host, port)
+s.connect(("localhost", port))
+
+s.send(b"Thanks for accepting the connection!")
+
+while True:
+    data = s.recv(1024)
+    print("Server says:", data.decode())
+
+    m = input("Enter message: ")
+    s.send(m.encode())
+
+    if m.lower() == "exit":
+        break
+
+s.close()
+```
+SERVER
+<img width="1919" height="1020" alt="Screenshot 2026-02-02 141440" src="https://github.com/user-attachments/assets/cd186948-d473-480d-b7aa-309f0e1ee6f2" />
+
+CLIENT
+<img width="1919" height="1017" alt="Screenshot 2026-02-02 141422" src="https://github.com/user-attachments/assets/1b081587-93fe-41a5-bb00-f0727d74ab70" />
+
 
 ## Result:
 
